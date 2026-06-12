@@ -5,6 +5,12 @@ import bpy
 from . import version_manager
 
 
+def _update_auto_save_settings(self, context):
+    from . import autosave
+
+    autosave.restart_timer()
+
+
 class BVCVersionItem(bpy.types.PropertyGroup):
     name: bpy.props.StringProperty(name="Nombre")
     filepath: bpy.props.StringProperty(name="Ruta")
@@ -37,6 +43,24 @@ class BVCPreferences(bpy.types.AddonPreferences):
         default=False,
     )
 
+    auto_save_enabled: bpy.props.BoolProperty(
+        name="Autoguardado",
+        description="Guarda automáticamente el archivo .blend cada cierto intervalo",
+        default=False,
+        update=_update_auto_save_settings,
+    )
+
+    auto_save_interval_minutes: bpy.props.FloatProperty(
+        name="Intervalo (minutos)",
+        description="Minutos entre autoguardados",
+        default=2.5,
+        min=0.5,
+        max=120.0,
+        step=0.5,
+        precision=1,
+        update=_update_auto_save_settings,
+    )
+
     max_versions: bpy.props.IntProperty(
         name="Máximo de versiones",
         description="Cantidad máxima de versiones a conservar (0 = sin límite)",
@@ -50,6 +74,14 @@ class BVCPreferences(bpy.types.AddonPreferences):
         layout.prop(self, "versions_subdir")
         layout.prop(self, "use_timestamp_naming")
         layout.prop(self, "auto_version_on_save")
+
+        box = layout.box()
+        box.label(text="Autoguardado", icon="TIME")
+        box.prop(self, "auto_save_enabled")
+        sub = box.column()
+        sub.enabled = self.auto_save_enabled
+        sub.prop(self, "auto_save_interval_minutes")
+
         layout.prop(self, "max_versions")
 
 
