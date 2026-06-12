@@ -10,7 +10,7 @@ bl_info = {
 
 import bpy
 
-from . import operators, properties, ui
+from . import autosave, operators, properties, ui
 
 classes = (
     properties.BVCVersionItem,
@@ -41,8 +41,12 @@ def register():
     if ui.bvc_load_post_handler not in bpy.app.handlers.load_post:
         bpy.app.handlers.load_post.append(ui.bvc_load_post_handler)
 
+    autosave.start_timer()
+
 
 def unregister():
+    autosave.stop_timer()
+
     if operators.bvc_save_post_handler in bpy.app.handlers.save_post:
         bpy.app.handlers.save_post.remove(operators.bvc_save_post_handler)
 

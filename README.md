@@ -39,6 +39,8 @@ En **Edit > Preferences > Add-ons > Blend Version Control**:
 | Carpeta de versiones | Subcarpeta personalizada (vacío = `.nombre_archivo_versions` junto al .blend) |
 | Usar fecha/hora | Nombres tipo `proyecto_20250611_143022.blend` en lugar de `v001`, `v002`… |
 | Versión automática al guardar | Crea una versión cada vez que guardas con Ctrl+S |
+| Autoguardado | Guarda el .blend automáticamente cada cierto intervalo |
+| Intervalo (minutos) | Minutos entre autoguardados (por defecto: 2.5) |
 | Máximo de versiones | Límite de versiones a conservar (0 = sin límite) |
 
 ## Estructura de archivos
@@ -60,5 +62,6 @@ blend_version_control/
   properties.py        # Preferencias y propiedades de escena
   operators.py         # Operadores (guardar, abrir, eliminar…)
   version_manager.py   # Lógica de versionado
+  autosave.py          # Autoguardado periódico
   ui.py                # Paneles y menús
 ```
